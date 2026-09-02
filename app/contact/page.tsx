@@ -6,7 +6,12 @@ import CallbackFormBand from '@/components/sections/CallbackFormBand';
 import BusinessMap from '@/components/shell/BusinessMap';
 
 // Read, never hardcoded — see app/page.tsx.
-export const metadata: Metadata = copy.routes['/contact'].meta;
+// Gate 13: a self-referencing canonical, resolved against `metadataBase`. It was absent
+// on all five routes until the Prompt 11 sweep checked over HTTP rather than reading config.
+export const metadata: Metadata = {
+  ...copy.routes['/contact'].meta,
+  alternates: { canonical: '/contact' },
+};
 
 const map = getSection('/contact', 'contact-map');
 

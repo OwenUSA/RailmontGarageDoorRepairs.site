@@ -12,7 +12,12 @@ import WhatSetsApart from '@/components/sections/WhatSetsApart';
 import ClosingCta from '@/components/sections/ClosingCta';
 
 // Read, never hardcoded — see app/page.tsx.
-export const metadata: Metadata = copy.routes['/about'].meta;
+// Gate 13: a self-referencing canonical, resolved against `metadataBase`. It was absent
+// on all five routes until the Prompt 11 sweep checked over HTTP rather than reading config.
+export const metadata: Metadata = {
+  ...copy.routes['/about'].meta,
+  alternates: { canonical: '/about' },
+};
 
 export default function AboutPage() {
   return (

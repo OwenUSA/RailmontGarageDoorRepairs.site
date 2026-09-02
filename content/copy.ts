@@ -118,7 +118,7 @@ const header: Section = {
     { label: 'Services' },
     { label: 'Contact' },
   ],
-  ctas: ['Call (803) 555-0164', 'Menu', 'Close'],
+  ctas: [`Call ${business.phone}`, 'Menu', 'Close'],
 };
 
 const footerNap: Section = {
@@ -129,12 +129,12 @@ const footerNap: Section = {
   subheading: 'Set true, torqued to spec, and left running quiet.',
   body: [
     'One crew, one standard. Every door we touch is balanced by hand, torqued to the figure the hardware calls for, and run through a full cycle before we pack up.',
-    'Serving Fort Mill and the York County line.',
+    business.serviceArea,
   ],
   items: [
-    { label: 'Call', text: '(803) 555-0164' },
-    { label: 'Visit', text: '873 Wexbury Landing, Fort Mill, SC 29708' },
-    { label: 'Open', text: '7 days, 7:00 AM – 7:00 PM' },
+    { label: 'Call', text: business.phone },
+    { label: 'Visit', text: business.address },
+    { label: 'Open', text: business.hours },
   ],
   ctas: ['Home', 'About', 'Services', 'Contact', 'Privacy Policy', 'Get directions'],
 };
@@ -155,7 +155,7 @@ const callBar: Section = {
   id: 'call-bar',
   refSection: null,
   cls: 'NOVEL',
-  ctas: ['Call (803) 555-0164'],
+  ctas: [`Call ${business.phone}`],
   body: ['Open 7:00 AM – 7:00 PM, every day'],
 };
 
@@ -342,9 +342,9 @@ const home: Page = {
       cls: 'NOVEL',
       heading: 'Where we work',
       body: [
-        'Serving Fort Mill and the York County line.',
-        '873 Wexbury Landing, Fort Mill, SC 29708',
-        '7 days, 7:00 AM – 7:00 PM',
+        business.serviceArea,
+        business.address,
+        business.hours,
       ],
       ctas: ['Get directions', 'Skip the map'],
     },
@@ -464,7 +464,7 @@ const about: Page = {
         'Describe the noise, the sag, the stall or the gap at the bottom and we will tell you on the phone whether it sounds like a spring, a cable, a track or an opener. If it is something you can safely check yourself, we will say that too.',
         'You do not need the name of the part and you do not need to have looked at it closely. What the door does, and roughly when it started doing it, is enough to work from.',
       ],
-      ctas: ['Call (803) 555-0164', 'Request a callback'],
+      ctas: [`Call ${business.phone}`, 'Request a callback'],
     },
     napFor('s10'),
     legalFor('s11-footer'),
@@ -529,7 +529,7 @@ const services: Page = {
         'Nobody rings up asking for a torsion spring. They ring up because the door dropped, or it groans halfway and stops, or there is daylight under one corner. So that is how this page is organised — start from the symptom and the part sorts itself out.',
         'The eight headings below cover every call we take. Read down them, find the one that sounds like your door, and you land on the right work without knowing a drum from a bearing plate.',
       ],
-      ctas: ['Call (803) 555-0164'],
+      ctas: [`Call ${business.phone}`],
     },
     {
       id: 'risk-band',
@@ -649,7 +649,7 @@ const services: Page = {
       body: [
         'Commercial doors cycle many times a day and fail differently for it — bearing and cable wear rather than sudden breakage, and usually with plenty of warning if anyone is listening. We service sectional bays, roll-up shutters and the openers that drive them.',
       ],
-      ctas: ['Call (803) 555-0164'],
+      ctas: [`Call ${business.phone}`],
     },
     {
       id: 'credentials',
@@ -667,7 +667,7 @@ const contact: Page = {
   meta: {
     title: 'Contact Railmont Garage Door Repairs | Fort Mill, SC',
     description:
-      'Request a callback for a garage door repair in Fort Mill, SC. Tell us what the door is doing and when to ring. Open 7 days, 7:00 AM to 7:00 PM. Call (803) 555-0164.',
+      'Request a callback for a garage door repair in Fort Mill, SC. Tell us what the door is doing and when to ring. Open 7 days, 7:00 AM – 7:00 PM. Call (803) 555-0164.',
   },
   sections: [
     header,
@@ -718,10 +718,10 @@ const contact: Page = {
       cls: 'NOVEL',
       heading: 'Find us',
       body: [
-        '873 Wexbury Landing, Fort Mill, SC 29708',
-        '(803) 555-0164',
-        '7 days, 7:00 AM – 7:00 PM',
-        'Serving Fort Mill and the York County line.',
+        business.address,
+        business.phone,
+        business.hours,
+        business.serviceArea,
       ],
       ctas: ['Get directions', 'Skip the map'],
     },

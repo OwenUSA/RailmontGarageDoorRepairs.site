@@ -16,7 +16,12 @@ import Credentials from '@/components/sections/Credentials';
 // Metadata is READ from content/copy.ts, never written here. A sibling site hardcoded
 // `metadata` into five page files, shipped the wrong city in all five, and no gate could
 // see it — similarity.mjs reads copy.ts, so anything there is measured.
-export const metadata: Metadata = copy.routes['/'].meta;
+// Gate 13: a self-referencing canonical, resolved against `metadataBase`. It was absent
+// on all five routes until the Prompt 11 sweep checked over HTTP rather than reading config.
+export const metadata: Metadata = {
+  ...copy.routes['/'].meta,
+  alternates: { canonical: '/' },
+};
 
 const map = getSection('/', 'service-map');
 // The confirmation line lives on the /contact band; the hero form reuses it rather than

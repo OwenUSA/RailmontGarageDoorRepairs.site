@@ -382,7 +382,11 @@ score decorative elements as actions. Even counted, ours would be 1 against the 
 the class** — it measures the same page-builder nesting for the same reason. That is a
 shared-instrument amendment and is not taken unilaterally here.
 
-Until then these rows are FLOORED at their measured values.
+**SUPERSEDED at Prompt 10+11.** The recommendation was taken: `buttons` is now ADVISORY in
+the shared harness, `vis()` dedupes nested matches by containment, and `.action-quiet` was
+NOT renamed. All 41 of these rows now PASS. See item 23 for the re-measured table and for
+why the naming decision is load-bearing. The analysis above is kept verbatim as the record
+of how the artefact was diagnosed.
 
 ### 18. Correction to item 6 — the rebuilt carousels cost `box.h`, not only advisory fields
 
@@ -484,3 +488,137 @@ first capture. Every other band was checked the same way: zero `card` classes, z
 - ~~Section structural residuals for the 43 bands the build wave has not reached.~~ **Closed
   at Prompt 6+7.** All 46 ADAPTED and 9 NOVEL bands are built, wired and measured; the
   residuals and their hypotheses are items 17 to 22 above. No band remains unbuilt.
+
+## Opened at Prompt 10+11 (asset prompts, then the trimmed acceptance sweep)
+
+### 23. The `buttons` artefact was fixed IN THE INSTRUMENT, and 41 floored rows cleared
+
+Item 17 diagnosed `buttons` as measuring the reference theme's **wrapper pair**
+(`<div class="section-btn"><a class="main-btn">` = 2 for one visible action), recommended
+making it ADVISORY, and explicitly declined to close it site-side. Both halves of that call
+have now been validated by measurement.
+
+The shared harness was amended by the programme lead, not by this site:
+
+- `buttons` joins `innerCount` / `innerRows` / `innerCols` / `position` as **ADVISORY** — it
+  is computed and printed as a trailing note, never contributing to a deviation percentage.
+- `vis()` now **dedupes nested matches by containment**, so the wrapper/anchor pair counts 1
+  rather than 2. That also corrected `cards`, which had the identical exposure.
+
+**Re-measured, full sweep, same build:**
+
+| | Prompt 6+7 | Prompt 10+11 |
+|---|---|---|
+| rows | 160 | 160 |
+| FAIL | 55 (41 section + 14 PAGE) | **14, all PAGE** |
+| PASS | 102 | **143** |
+| worst ADAPTED row | 8.7% | **3.91%** (`/services` `credentials` @390) |
+| BLOCKED | 0 | 0 |
+
+**Every ADAPTED and NOVEL section row on all five routes now passes.** `footer-nap`, floored
+at 5.83 / 7.07 / 7.03% in item 11, now measures 3.5% and passes on its own numbers; only its
+*length* exemption (item 7) remains, which is a content rule and not a geometry one. The 14
+remaining FAILs are the whole-PAGE height rows of item 19, whose causes — the exempt fat
+footer and the Formidable-Pro form we replaced with five fields — are contract-mandated.
+
+### 24. `.action-quiet` is NOT renamed, and the reason is a gate, not taste
+
+Recorded explicitly because it looks like free deviation-percentage and is not.
+
+`cfg.ctaSelector` is `a[href^="tel:"], button, [class*=btn], [class*=button]`. Any class name
+containing the substring `btn` or `button` is scored as an **action** by the render-truth CTA
+checks. `.action-quiet` was named at Prompt 5 to sit outside that match on purpose.
+
+Renaming it to `.btn-quiet` would have added roughly 2.17pp of `buttons` credit per band — and
+would simultaneously have enrolled every secondary action in `cta-primacy`, whose entire job is
+to keep the call CTA the most saturated element on the page. That is trading a real gate for a
+cosmetic metric. `docs/known-divergence.md` 9 states the rule the class exists to enforce:
+
+> Exactly one filled chromatic action exists on this site: the call CTA (`.action-call`,
+> `--color-accent`). Every other action is `.action-quiet`.
+
+**Do not rename `.action-quiet`.** The metric it was "failing" no longer exists.
+
+### 25. What the carousel rebuild actually costs — item 6's correction STANDS
+
+Item 18 corrected item 6, and the correction survives the instrument change intact, which is
+the point: it was never an advisory-field artefact.
+
+Rebuilding the five jQuery carousels as static bands lands on **`box.h`, a BLOCKING field** —
+`credentials` on `/services` measured ref 273 vs ours 1949 at 390. A slider shows one row of
+assets; the same assets at the same recorded slot dimensions, wrapped, are several rows tall.
+**D-14 requires the 16 badge slots at the reference's own dimensions and item 6 forbids
+rebuilding the slider**, so the height is the arithmetic consequence of two contract rules that
+both hold. It is a floor, not a defect, and no iteration is spent on it.
+
+That this band still lands at 3.91% — the worst ADAPTED row on the site, and passing — is
+because the rest of its blocking fields are exact.
+
+### 26. NO FONT-SUBSTITUTION FLOOR — restated at the end of the chain
+
+Item 3 stated it at Prompt 1 and nothing since has changed it. **Hind** and **Teko** are the
+reference's own real faces, both Google/OFL, both loaded through `next/font/google`. We use the
+*same families*, not lookalikes. D-11 does not apply, there is no text-metric delta to excuse,
+and **no floor is booked for any font on this site.** `Montserrat`, `Bebas Neue`, `Nanum Pen`
+and the `--bs-*-font-family` variables in the reference CSS have zero `@font-face` rules and
+zero computed usages; booking a floor for one of them is forbidden.
+
+### 27. COLOUR — permanently excluded, restated at the end of the chain (A-8)
+
+Item 1 stands unchanged and terminal. The palette is randomized at token-write time, so our
+resolved colours will never match the reference's. Resolved colour, background-colour,
+border-colour, gradient stops and shadow colour are **stripped from the structural
+comparator**; geometry, typography and the non-colour parts of borders and shadows are all
+still measured. Winning seed **178543**; candidate seeds **787251 / 178543 / 495315 / 231361 /
+375791** under master seed **123** (item 8 carries the full table and the four rejected master
+seeds).
+
+**Excluded from every diff, every threshold and every future iteration. Do not reopen.**
+
+### 28. Three defects the acceptance sweep found and FIXED (not floored)
+
+None is a divergence from the reference, so `ITERATION_CAP` does not apply to any of them.
+
+1. **No `<link rel="canonical">` on any of the five routes.** Caught only because gate 13 was
+   verified over HTTP instead of by reading `app/layout.tsx` — the config *looked* complete.
+   Fixed with a self-referencing `alternates.canonical` per route, resolved against
+   `metadataBase`. Verified over HTTP on all five. Titles were checked at the same time for the
+   sibling's `title.template` double-brand defect: absent here, the template is `%s` and each
+   route names the brand exactly once.
+2. **Two hours strings on `/contact`.** The band and footer rendered
+   `7 days, 7:00 AM – 7:00 PM` (en dash) while the route's meta description rendered
+   `7:00 AM to 7:00 PM`. Exactly the drifted-duplicate class a sibling shipped. The description
+   now uses the canonical form, and the NAP literals that had been repeated inside
+   `content/copy.ts` — phone ×2, address ×3, hours ×3, service area ×3, plus five
+   `Call (803) 555-0164` CTA labels — were replaced with references to the `business` object,
+   so each fact exists **once** in the codebase.
+3. **`pnpm start` could not start the production server at all.** `scripts/start-standalone.mjs`
+   imported `.next/standalone/server.js`, which `next.config.ts` deliberately does not emit on
+   Windows (the standalone tracer symlinks into the pnpm store and dies with EPERM). The script
+   now falls back to `next start` against the same `.next` build when the standalone entry is
+   absent. `output: 'standalone'` is untouched and still applies on Linux, so the Hostinger
+   deploy path is unchanged.
+
+### 29. One environment hazard, recorded so it is not misread as a build defect
+
+`pnpm build` failed twice consecutively on this machine with
+`PageNotFoundError: Cannot find module for page: /<route>` for **every** route, from a clean
+`.next`, on a commit that had previously built clean. The third identical invocation succeeded
+and every subsequent one has. The repository lives on **OneDrive**, and the signature is
+file-lock contention during `Collecting page data`, not a code fault — `tsc --noEmit` was clean
+throughout and the eventual build emitted all 8 entries as static.
+
+**If this recurs, re-run before investigating.** Do not edit a source file in response to it.
+
+### 30. Gates DROPPED by A-4, recorded rather than substituted
+
+- **Lighthouse on all five routes** — not run, nothing substituted. `docs/PRE-LAUNCH.md`
+  carries it as *"performance never measured"*.
+- **The manual keyboard-only pass** — not performed by hand. What *was* done is programmatic
+  and is a strictly smaller claim: the drawer toggle's `aria-expanded` flips on Enter and
+  returns focus to the toggle on Escape; the first Tab stop is the skip link; the six
+  `<details>` / `<summary>` FAQ items are focusable and operate on Enter; all 29 interactive
+  elements on `/contact` are in the tab order with no `tabindex="-1"`; both map bypass anchors
+  are the first child of their band with a live target; and no `tel:` link falls under 44px at
+  390. `docs/PRE-LAUNCH.md` carries the gap as *"keyboard access is spec-verified only, never
+  hand-tested"*.
