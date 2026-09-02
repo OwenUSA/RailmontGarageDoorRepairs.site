@@ -650,3 +650,281 @@ a[href^="tel:"] {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   BAND SYSTEM — Prompt 6+7. LEAD-OWNED AND FROZEN. No section agent edits this.
+
+   WHY IT EXISTS AT ALL. diff.mjs scores 23 BLOCKING fields on the BAND ELEMENT
+   ITSELF — the element carrying data-section — and 11 of them are categorical,
+   so ONE categorical miss costs 100/23 = 4.35pp of a 5% budget. Every reference
+   band on this site computes the same categorical row:
+
+     display block | radius 0px | shadow none | gridCols none | gap normal
+     flexDir row | textTransform none | borderStyle none | overflow visible
+     fontFamily hind | fontSize 18 | fontWeight 400 | ls 1.8px | lh 21.6px
+
+   Only textAlign and the paddings vary. So the band root is ALWAYS a plain
+   block with nothing but padding on it, and every flex/grid/gap/radius/shadow
+   lives on an inner wrapper. Put display:grid on a band root and the row fails
+   on that field alone.
+
+   PADDING VALUES ARE THE REFERENCE'S OWN, per band, per breakpoint — read from
+   .harness/cap/ref/<route>-<bp>/meta.json and tabulated in docs/ref-targets.md.
+   A uniform value would fix three bands and break the eight that are correctly
+   0/0. No new spacing token is minted: where the reference value is not one of
+   Prompt 5's 14 steps it is composed by calc() from steps that are, and the
+   residual delta is recorded in docs/known-divergence.md.
+
+   The 1400px query, not 1440: --header-h already switches there and BP_SET
+   measures 1440, which is inside it.
+   --------------------------------------------------------------------------- */
+.band {
+  display: block;
+  position: relative;
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.band-dark {
+  background-color: var(--color-neutral-900);
+  color: var(--color-surface);
+}
+.band-dark h1, .band-dark h2, .band-dark h3, .band-dark h4 { color: var(--color-surface); }
+.band-tint { background-color: var(--color-neutral-200); }
+
+/* textAlign is the one categorical field that varies between reference bands. */
+.ta-center { text-align: center; }
+@media (max-width: 1399px) { .ta-center-md { text-align: center; } }
+@media (max-width: 767px)  { .ta-center-sm { text-align: center; } }
+
+/* --- band padding, one class per reference pattern ---------------------- */
+/* 0 / 0 / 0 */
+.pad-none { padding-top: 0; padding-bottom: 0; }
+
+/* 50/50 -> 75/75 -> 100/100. The reference's dominant section rhythm. */
+.pad-rhythm { padding-top: var(--spacing-5xl); padding-bottom: var(--spacing-5xl); }
+@media (min-width: 768px)  { .pad-rhythm { padding-top: var(--spacing-7xl); padding-bottom: var(--spacing-7xl); } }
+@media (min-width: 1400px) { .pad-rhythm { padding-top: var(--spacing-8xl); padding-bottom: var(--spacing-8xl); } }
+
+/* 100/100 at every width (home door-styles). */
+.pad-100 { padding-top: var(--spacing-8xl); padding-bottom: var(--spacing-8xl); }
+
+/* 150/50 -> 80/75 -> 100/100 (home intro). 150 = 100+50, 80 = 40+40. */
+.pad-intro { padding-top: calc(var(--spacing-8xl) + var(--spacing-5xl)); padding-bottom: var(--spacing-5xl); }
+@media (min-width: 768px)  { .pad-intro { padding-top: calc(var(--spacing-4xl) * 2); padding-bottom: var(--spacing-7xl); } }
+@media (min-width: 1400px) { .pad-intro { padding-top: var(--spacing-8xl); padding-bottom: var(--spacing-8xl); } }
+
+/* 50/0 -> 75/0 -> 100/0 (home why-us). */
+.pad-rhythm-top { padding-top: var(--spacing-5xl); padding-bottom: 0; }
+@media (min-width: 768px)  { .pad-rhythm-top { padding-top: var(--spacing-7xl); } }
+@media (min-width: 1400px) { .pad-rhythm-top { padding-top: var(--spacing-8xl); } }
+
+/* 50/80 -> 75/200 -> 100/200 (home process ONLY; /services process is .pad-rhythm). */
+.pad-process { padding-top: var(--spacing-5xl); padding-bottom: calc(var(--spacing-4xl) * 2); }
+@media (min-width: 768px)  { .pad-process { padding-top: var(--spacing-7xl); padding-bottom: calc(var(--spacing-8xl) * 2); } }
+@media (min-width: 1400px) { .pad-process { padding-top: var(--spacing-8xl); padding-bottom: calc(var(--spacing-8xl) * 2); } }
+
+/* 92/92 -> 350/92 -> 350/92 (home promise). 92 -> 90 (60+30), a 2.2% recorded delta;
+   350 = 100*3 + 50, exact. The 350 is the reference's overlap-image gutter. */
+.pad-promise {
+  padding-top: calc(var(--spacing-6xl) + var(--spacing-2xl));
+  padding-bottom: calc(var(--spacing-6xl) + var(--spacing-2xl));
+}
+@media (min-width: 768px) { .pad-promise { padding-top: calc(var(--spacing-8xl) * 3 + var(--spacing-5xl)); } }
+
+/* 47/47 at every width (the four interior page-head strips). 47 -> 50, a 6.4%
+   recorded delta. The strip also carries the reference's only band-level shadow,
+   which is EXACTLY --shadow-md once shadowGeometry() strips the colour. */
+.pad-head { padding-top: var(--spacing-5xl); padding-bottom: var(--spacing-5xl); }
+.page-head { box-shadow: var(--shadow-md); }
+
+/* 40/40 -> 0/0 -> 0/0 (about-intro, callback-form, privacy-body). */
+.pad-prose { padding-top: var(--spacing-4xl); padding-bottom: var(--spacing-4xl); }
+@media (min-width: 768px) { .pad-prose { padding-top: 0; padding-bottom: 0; } }
+
+/* 50/50 -> 50/50 -> 100/100 (about reputation). */
+.pad-reputation { padding-top: var(--spacing-5xl); padding-bottom: var(--spacing-5xl); }
+@media (min-width: 1400px) { .pad-reputation { padding-top: var(--spacing-8xl); padding-bottom: var(--spacing-8xl); } }
+
+/* --- inner layout helpers. NEVER applied to a band root. ---------------- */
+.stack { display: flex; flex-direction: column; gap: var(--spacing-lg); }
+.cols { display: grid; grid-template-columns: 1fr; gap: var(--spacing-2xl); align-items: start; }
+@media (min-width: 768px)  { .cols-2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 768px)  { .cols-3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px)  { .cols-4 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 992px)  { .cols-4 { grid-template-columns: repeat(4, 1fr); } }
+.prose > * + * { margin-top: var(--spacing-lg); }
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.band-dark .eyebrow { color: var(--color-neutral-400); }
+.h-band { font-size: var(--text-5xl); }
+@media (min-width: 768px)  { .h-band { font-size: var(--text-6xl); } }
+@media (min-width: 1400px) { .h-band { font-size: var(--text-7xl); } }
+.h-item { font-size: var(--text-4xl); }
+.lede { font-size: var(--text-lg); line-height: var(--leading-normal); }
+.body-copy { line-height: var(--leading-normal); }
+
+/* TODO(fact) markers RENDER VISIBLY (D-14/D-17). They are not comments. */
+.todo-fact {
+  display: block;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-neutral-900);
+  background-color: var(--color-neutral-200);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  text-align: start;
+}
+
+/* Credential chips: TODO(fact) placeholders at the reference slot dimensions. */
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--spacing-lg); justify-content: center; }
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-neutral-200);
+  color: var(--color-neutral-900);
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
+  padding: var(--spacing-2xs);
+}
+
+/* Media slots. Placeholders until Prompt 10/11 hands the generated files back. */
+.media { display: block; width: 100%; height: auto; }
+.media-cover { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* --- the callback form (spec 06). Shared by hero, services-banner, contact. --- */
+/* NOT named form-card: the probe counts [class*=card] as `cards`, and every
+   reference band on this site is cards:0. A "card" in a class name fails the row. */
+.form-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2xl);
+  box-shadow: var(--shadow-md);
+  text-align: start;
+}
+.band-dark .form-panel { color: var(--color-neutral-900); }
+.field { display: flex; flex-direction: column; gap: var(--spacing-2xs); }
+.field + .field { margin-top: var(--spacing-md); }
+.field label {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-900);
+}
+.field input, .field select, .field textarea {
+  min-height: 48px;
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-tight);
+  transition: border-color 120ms ease;
+}
+.field textarea { min-height: 96px; }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+  border-color: var(--color-focus);
+}
+/* Chrome's autofill repaints the field background; re-assert the token (spec 06.5). */
+.field input:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-neutral-900);
+  box-shadow: 0 0 0 1000px var(--color-surface) inset;
+}
+.field [aria-invalid="true"] { border-color: var(--color-error); border-width: 2px; }
+.field-error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+  transition: opacity 150ms ease;
+}
+.form-summary {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-normal);
+}
+.form-done {
+  color: var(--color-neutral-900);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  transition: opacity 200ms ease;
+}
+.form-done h3 { font-size: var(--text-4xl); }
+.form-hint { font-size: var(--text-xs); color: var(--color-neutral-600); line-height: var(--leading-normal); }
+
+/* --- FAQ (spec 05). Native <details>, no JS, no name= grouping. --------- */
+.faq-item { border-bottom: 1px solid var(--color-border); }
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  min-height: 44px;
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  cursor: pointer;
+  list-style: none;
+  scroll-margin-top: var(--header-h);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary h3 { font-size: var(--text-3xl); text-align: start; }
+.faq-item .faq-a { padding-bottom: var(--spacing-md); line-height: var(--leading-normal); text-align: start; }
+.faq-item svg { flex: none; transition: transform 200ms ease-out; }
+.faq-item[open] summary svg { transform: rotate(180deg); }
+@supports (interpolate-size: allow-keywords) {
+  :root { interpolate-size: allow-keywords; }
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 200ms ease-out, content-visibility 200ms allow-discrete;
+  }
+  .faq-item[open]::details-content { block-size: auto; }
+}
+
+/* Form submit. NOT the call CTA: painted in the primary (chroma 0.0341) so the
+   accent call CTA (chroma 0.1655) stays the most saturated action on every page,
+   which is what rendertruth.mjs cta-primacy ranks. Deliberately not named btn/button —
+   ctaSelector matches those substrings. */
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 0;
+  border-radius: var(--radius-xs);
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-base);
+  line-height: var(--leading-tight);
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+.form-submit:hover { background-color: var(--color-primary-deep); }
+
+/* A-13, caught by contrast.mjs on the first section sweep and NOT iteration-capped:
+   .action-quiet paints --color-primary #232c19, which sits at 1.24:1 on the dark band
+   #0e1a00 — a secondary action effectively invisible on six rows across three routes.
+   The fix is one rule in the shell rather than six per-band overrides, and it is the
+   surface colour (chroma 0) so the accent call CTA keeps chroma dominance. */
+.band-dark .action-quiet { color: var(--color-surface); }

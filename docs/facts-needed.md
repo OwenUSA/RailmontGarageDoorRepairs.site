@@ -9,6 +9,13 @@ for the build and are listed separately in `docs/PRE-LAUNCH.md` as must-replace-
 Everything on *this* page is not decided at all. It has no value yet, fictional or otherwise,
 and nothing on the site asserts one.
 
+## Rendering status, verified at Prompt 6+7
+
+Every `TODO(fact)` below now **renders visibly on the built page** — none is a comment and
+none was tidied away by a section builder. Counted in the served HTML:
+`/` 36 markers, `/services` 32, `/about` 3. The 16 credential chips carry theirs as their own
+visible label; `reputation` and `testimonials` carry theirs as a `.todo-fact` paragraph.
+
 ## Open facts
 
 | # | fact needed | where it renders | what is shipped instead | blocked by |

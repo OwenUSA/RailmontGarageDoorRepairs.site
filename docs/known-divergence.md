@@ -287,7 +287,200 @@ against a built DOM. It becomes a runnable assertion at Prompt 6, when the lead 
 `service-map` on `/` and `contact-map` on `/contact`. Three sibling sites shipped this band as
 a keyboard trap; the assertion is not optional at Prompt 6.
 
+## Opened at Prompt 6+7 (lead builds hero + both maps, then one 4-wide wave)
+
+### 15. `<BusinessMap>` IS NOW MOUNTED, and the bypass assertion has been RUN
+
+Item 14 is closed. `service-map` is mounted on `/` at zoom 13 and `contact-map` on `/contact`
+at zoom 15, and spec 07's first acceptance criterion has been executed against the BUILT DOM
+rather than read off the JSX:
+
+```
+document.querySelector('[data-section$="-map"]').firstElementChild === the bypass anchor
+/         firstElementChild A.map-bypass  href "#after-service-map"   target exists: true
+/contact  firstElementChild A.map-bypass  href "#after-contact-map"   target exists: true
+```
+
+Both frames are `loading="lazy"`, both carry an explicit `title`, both are addressed by
+`MAP_COORDS` alone — `https://www.google.com/maps?q=35.0074,-80.9451&z=13|15&output=embed` —
+and the fictional address never reaches a geocoder (D-07). Three sibling sites shipped this
+band as a keyboard trap because the spec existed and was never executed. It has now been
+executed.
+
+### 16. One render-truth defect, found by `contrast.mjs` on the wave's first sweep
+
+Not iteration-capped (A-13), fixed rather than floored. The first contrast run over the built
+sections read **1268 scored, 21 FAIL**, and every failure was one rule:
+
+| route | bp | ratio | fg | bg | text |
+|---|---|---|---|---|---|
+| `/` | 1440 | **1.24** | `#232c19` | `#0e1a00` | "Talk to us about your door" |
+| `/` | 1440 | **1.24** | `#232c19` | `#0e1a00` | "Free estimate" |
+| `/about` | 1440 | **1.24** | `#232c19` | `#0e1a00` | "Call (803) 555-0164" |
+| `/about` | 1440 | **1.24** | `#232c19` | `#0e1a00` | "Request a callback" |
+| `/services` | 1440 | **1.24** | `#232c19` | `#0e1a00` | "Get it looked at" |
+| `/services` | 1440 | **1.24** | `#232c19` | `#0e1a00` | "Get it looked at" / "Call ..." |
+
+`.action-quiet` paints `--color-primary` `#232c19`, which is 1.24:1 against the `.band-dark`
+ground `#0e1a00`. Six of the site's secondary actions — including two `tel:` links — were
+effectively invisible on three routes. This is the Atlas failure mode exactly: a value that is
+correct in the token file and wrong where it is painted.
+
+Fixed with ONE rule in the shell rather than six per-band overrides:
+
+```css
+.band-dark .action-quiet { color: var(--color-surface); }
+```
+
+The surface colour has chroma 0, so the accent call CTA (chroma 0.1655) keeps chroma dominance
+and `cta-primacy` is unaffected. Re-run: **1268 scored, 0 FAIL, 0 UNMEASURABLE.**
+`rendertruth.mjs`: **0 findings.**
+
+A green shell did not mean green sections. The shell passed both gates at Prompt 5 because
+header and footer were the only components carrying words, and neither of them puts a quiet
+action on a dark band.
+
+### 17. `buttons` measures the reference's WRAPPER PAIR, not its number of actions
+
+**This is the single largest structural residual on the site and it is an instrument artefact
+of exactly the kind A-12 already ruled advisory for `innerCount`.** It is recorded here rather
+than fixed, because fixing it means renaming `.action-quiet`, which is a standing design
+decision this build must not reverse on its own.
+
+Across the 41 failing ADAPTED rows the residual decomposes as:
+
+| field | summed deviation over failing rows | share |
+|---|---|---|
+| `buttons` | 3886 | 65% |
+| `box.h` | 1977 | 33% |
+| `padTop` | 73 | 1.2% |
+| `padBottom` | 4 | 0.1% |
+
+`buttons` is `cfg.ctaSelector` = `a[href^="tel:"], button, [class*=btn], [class*=button]`,
+counted over visible elements. Inspected directly in the reference at 1440:
+
+```
+.main.section.sect-page_intro   ->  DIV.section-btn , A.main-btn c-yellow          = 2
+.plan.section                   ->  DIV.section-btn sb-center d-flex , A.main-btn   = 2
+.pricing-section                ->  DIV.buttons , A.main-btn   x3                   = 6
+.roofing.section                ->  5x A.main-btn , DIV.section-btn , A.main-btn    = 7
+```
+
+The theme wraps every action in a `div` whose class contains `btn`, so ONE visible action
+scores TWO. Our clean markup renders one action as one element, and `.action-quiet` matches
+none of the four selector arms. Ref 2 vs ours 0 is therefore not a missing action — it is a
+missing wrapper div plus a class-name mismatch — and it costs a **flat 100/23 = 4.35pp** on
+every band that carries a single secondary action. That is 87% of a 5% budget spent before
+geometry is looked at, which is precisely the argument A-12 made about `innerCount`.
+
+**Two options, and the recommendation.** Ours could be made to count by giving the secondary
+action a class containing `btn` or `button`. That was deliberately NOT done at Prompt 5: the
+class is named `.action-quiet` because `ctaSelector` matches those substrings and would then
+score decorative elements as actions. Even counted, ours would be 1 against the reference's 2
+(dev 50%, 2.17pp), which is enough to clear most rows. **The recommendation is to make
+`buttons` ADVISORY alongside `innerCount`/`innerRows`/`innerCols`/`position`, not to rename
+the class** — it measures the same page-builder nesting for the same reason. That is a
+shared-instrument amendment and is not taken unilaterally here.
+
+Until then these rows are FLOORED at their measured values.
+
+### 18. Correction to item 6 — the rebuilt carousels cost `box.h`, not only advisory fields
+
+Item 6 stated that rebuilding the five jQuery carousels as static bands confined the
+structural cost to `innerCount`/`innerRows`/`innerCols`, which A-12 makes advisory. **That was
+wrong, and the measurement says so.** A slider shows one row of assets; a static wrapped row
+of the SAME assets at the SAME recorded slot dimensions is several rows tall:
+
+| band | bp | ref `box.h` | ours | dev |
+|---|---|---|---|---|
+| `credentials` (`/services` s10) | 390 | 273 | 1949 | 86.0% |
+| `credentials` (`/` s12) | 768 | 228 | 941 | 75.8% |
+| `credentials` (`/services` s10) | 1440 | 204 | 550 | 62.9% |
+| `why-us` (`/` s05) | 768 | 644 | 1750 | 63.2% |
+
+The height is a direct consequence of two contract rules that both hold: D-14 requires the 16
+badge slots to ship as `TODO(fact)` chips **at the reference's own dimensions**, and item 6
+forbids rebuilding the slider. Shrinking the chips to make the band shorter would break D-14;
+rebuilding the slider would break item 6. **The band height is therefore a floor, not a
+defect**, and the one `ITERATION_CAP` attempt is deliberately not spent on it.
+
+### 19. The PAGE height rows are dominated by two decisions already in the contract
+
+| route | ref page | ours | delta |
+|---|---|---|---|
+| `/services` | 7754 | 8061 | **4.0% PASS** |
+| `/` | 10286 | 7952 | 22.7% |
+| `/privacy` | 3343 | 2684 | 19.7% |
+| `/about` | 6885 | 4758 | 30.9% |
+| `/contact` | 3310 | 2099 | 36.6% |
+
+Decomposed on `/contact` at 1440, where the delta is worst (1211px total):
+
+- `footer-nap` ref 1107 vs ours 426 = **681px, 56% of the whole gap.** This is the item 7
+  length exemption: the reference footer repeats a 44-destination site map and D-01 fixes this
+  site at five routes. Already permanently exempt; not reopened.
+- `callback-form` ref 1597 vs ours 781 = **816px.** Formidable Forms + Formidable Pro +
+  reCAPTCHA, 17 to 44 inputs, replaced by five fields with no backend (D-03, D-05).
+
+Both are contract-mandated content differences, not build defects. `/` and `/services` carry
+the same footer floor plus the three DELETED bands (locations D-02, staff D-09/D-17, gallery
+D-01). **No fix attempt is spent on the PAGE rows.**
+
+### 20. What the band system does, and the padding deltas it books
+
+Every reference band computes the same categorical row — `display block`, `radius 0px`,
+`shadow none`, `gridCols none`, `gap normal`, `flexDir row`, `textTransform none`,
+`borderStyle none`, `overflow visible`, Hind 18/400, letter-spacing 1.8, line-height 21.6 —
+and 11 of the 23 blocking fields are categorical, so one miss costs 4.35pp. The `.band` class
+therefore paints exactly that row and every band root in the build is a plain block carrying
+nothing but padding; all flex, grid and gap live on inner wrappers. Verified: all 20 band
+components declare `<section className="band …" data-section={section.id}>` and not one
+carries an inline style.
+
+Band padding is the reference's own value **per band, per breakpoint**, read from
+`.harness/cap/ref/*/meta.json` and tabulated in `docs/ref-targets.md` — a uniform value would
+have fixed three bands and broken the eight that are correctly 0/0. No spacing token was
+minted. Where a reference value is not one of Prompt 5's 14 steps it is composed by `calc()`
+from steps that are, and the residual is booked here:
+
+| pattern | reference | painted | delta |
+|---|---|---|---|
+| `.pad-head` (4 page-head strips) | 47 | 50 | +6.4% |
+| `.pad-promise` top at 390 | 92 | 90 (`60+30`) | −2.2% |
+| `.pad-intro` top at 390 | 150 | 150 (`100+50`) | exact |
+| `.pad-intro` top at 768 | 80 | 80 (`40+40`) | exact |
+| `.pad-process` bottom at 768/1440 | 200 | 200 (`100*2`) | exact |
+| `.pad-promise` top at 768/1440 | 350 | 350 (`100*3+50`) | exact |
+
+Summed `padTop` deviation across all 41 failing rows is 73 and `padBottom` is 4 — 1.3% of the
+total residual. Padding is not what is failing these rows.
+
+### 21. `.form-card` was renamed `.form-panel` before it could be measured
+
+The callback form's container was first written as `.form-card`. The probe counts
+`[class*=card],article` as the `cards` field and **every reference band on this site is
+`cards:0`**, so the class would have scored a phantom card on `hero`, `services-banner` and
+`callback-form` at a flat 4.35pp each. Caught by a grep over the wave's output before the
+first capture. Every other band was checked the same way: zero `card` classes, zero
+`<article>`, zero `btn`/`button` class names, zero `.action-call` outside the shell.
+
+### 22. Three placeholder slots used off their recorded route, and one slot deliberately unused
+
+- `/services` `risk-band` renders `promise-media.svg`, which INVENTORY records against `/`
+  `promise`. Both slots are placeholders at similar aspect and the file is replaced at Prompt
+  10/11 either way; recorded so the asset-prompt pass does not double-count the slot.
+- `intro-bg`, `process-bg` and `experience-bg` are **deliberately not mounted.** All three are
+  band backgrounds, and text over a `url()`-backed rectangle reports `UNMEASURABLE` from
+  `contrast.mjs` rather than failing — which reads as a pass. The bands render on solid token
+  grounds instead and are fully measurable. This is why the contrast sweep shows
+  **0 UNMEASURABLE** across 1268 scored pairs.
+- The 16 `credential-badge-*.svg` files are not rendered as images at all. A drawn badge
+  implies a credential we do not hold (D-14); the band ships text-only `TODO(fact)` chips at
+  the recorded dimensions.
+
+
 ## Still not opened
 
-- **Section structural residuals** for the 43 bands the build wave has not reached. One fix
-  attempt each (`ITERATION_CAP` = 1, A-2), then the residual and a hypothesis land here.
+- ~~Section structural residuals for the 43 bands the build wave has not reached.~~ **Closed
+  at Prompt 6+7.** All 46 ADAPTED and 9 NOVEL bands are built, wired and measured; the
+  residuals and their hypotheses are items 17 to 22 above. No band remains unbuilt.
