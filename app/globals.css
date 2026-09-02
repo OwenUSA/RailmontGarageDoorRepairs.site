@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Tailwind v4 CSS-first tokens.
+   Prompt 1 ships the FILE and the @theme block only. The real token set --
+   extracted ramp, OKLCH re-derivation, randomized primary in the 105-130 hue
+   window -- lands in Prompt 5 (merged 5+9). Do not add tokens before then;
+   A-6 makes this a lead-owned, frozen-after-Prompt-5 file.
+   --------------------------------------------------------------------------- */
+@theme {
+  /* populated by Prompt 5 */
+}
+
+/* A-14: every tel: link is a primary conversion target. WCAG 2.5.8 minimum in
+   ONE place rather than per component. min-height is inert on a purely inline
+   box, so tel links inside prose keep their natural metrics and the type scale
+   the diff measures is untouched. */
+a[href^="tel:"] {
+  min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

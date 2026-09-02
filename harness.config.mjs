@@ -23,20 +23,44 @@ export default {
 
   breakpoints: { diff: [390, 768, 1440], extra: [430], canonical: 1440 },
 
-  // Framework is UNPROFILED here -- Prompt 1 fills these in from the SAVED copy in
-  // reference/raw/, never the live site. Four distinct page builders have turned up across
-  // the fleet so far (Divi, Avada/Fusion, Elementor, and two bespoke themes), which is
-  // exactly why segmentation is per-site config and not baked into the package.
-  sectionCandidates: ['.elementor-top-section', '.e-con.e-parent', '.et_pb_section', '.fusion-fullwidth', 'main > section', 'section'],
+  // ---- segmentation, FILLED BY PROMPT 1 from the SAVED copy in reference/raw/ -------
+  // Reference framework: WordPress 7.0.2 + bespoke theme `splashomnimediatheme`
+  // (Bootstrap-grid markup, jQuery, jQuery.mmenu drawer). NOT Divi/Elementor/Avada/Fusion.
+  // There is not a single <section>, <header>, <footer>, <main> or <nav> tag on any of the
+  // five pages -- the whole document is divs -- so every tag-shaped candidate scores 0 and
+  // the generic default list would have fallen through to the body-children fallback.
+  //
+  // `#page > div` is the band container and yields 16/13/14/6/6 outer bands on
+  // home/about/services/contact/privacy, IDENTICALLY at 390, 768 and 1440. No band splits
+  // at any width, so the probe's ordinal ids are stable across the whole BP_SET.
+  //
+  // `:not(.instant-quote-new)` is load-bearing, not tidying. The Roofle instant-quote
+  // widget is an absolutely-positioned overlay inside #page, so it sorts by docTop into a
+  // DIFFERENT ordinal slot at 390 than at 768/1440 (on /about-us it lands at index 2 at the
+  // two wider widths and index 3 at 390), which shifts every id after it and unpairs the
+  // page. It is also DELETED by contract (no quote tool among our five routes), so nothing
+  // is lost by excluding it from segmentation.
+  //
+  // The last two entries are OUR side: the Next tree has no #page, so it falls through to
+  // `main > section`.
+  sectionCandidates: ['#page > div:not(.instant-quote-new)', '#page > div', 'main > section', 'section'],
   // EXACT selectors only -- config.mjs REFUSES a [class*=] matcher at startup, because one
   // matched <body class="pb-callbar"> on a sibling and containment-dedup then deleted
   // HEADER and FOOTER from every capture.
-  chromeSelectors: ['header', 'footer'],
-  headerSelector: 'header',
-  navToggleSelector: 'button[aria-controls], .menu-toggle, .hamburger',
-  drawerSelector: '[data-drawer], .mobile-menu, .nav-drawer',
+  // The reference's chrome is DIV#header / DIV#footer (id, not tag). Those are already
+  // #page children, so on the reference side these entries are a no-op that the containment
+  // check absorbs; they exist for OUR side, where the shell is a real <header>/<footer>.
+  // `.bottom-area` (the fat NAP/locations footer block) is deliberately NOT listed: it is
+  // already a #page band and listing it would only risk swallowing a sibling band.
+  chromeSelectors: ['#header', '#footer', 'header', 'footer'],
+  headerSelector: '#header, header',
+  // Reference hamburger is `.nav-btn > a` (two span.mm-line rules); jQuery.mmenu drawer.
+  navToggleSelector: '.nav-btn a, button[aria-controls], .menu-toggle, .hamburger',
+  drawerSelector: '.mm-menu, .mm-panel, [data-drawer], .mobile-menu, .nav-drawer',
   ctaSelector: 'a[href^="tel:"], button, [class*=btn], [class*=button]',
-  logoSelector: 'header img, .logo img, #logo',
+  logoSelector: '.custom-logo, #header img, header img, .logo img, #logo',
+  // No icon font on the reference: every glyph is an inline SVG (.svg-icon/.svg-omnimedia).
+  // Text renders in Teko (display) and Hind (body), both Google/OFL -- see docs/profile.md.
   iconFontFamilies: /fontawesome|icomoon|material|elementskit|awb-icons|eicons/i,
 
   thresholds: { fidelity: 2, struct: 5, token: 0 },
