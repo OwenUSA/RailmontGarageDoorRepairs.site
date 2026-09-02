@@ -125,6 +125,104 @@ export default {
   // element. Report how many seeds you tried. Note the auto-selector is structurally biased
   // toward magenta accents -- at fixed OKLCH L/C the lowest luminance sits near hue 300-360
   // -- so seeds landing there are common and must be re-rolled unless that IS your window.
+  // ---- referenceRamp: EXTRACTED at Prompt 5 from the served local reference ----------
+  // Mined by walking every visible element on all five pages at 390/768/1440 and tallying
+  // computed `color`, `background-color`, `border-color`. The swatches below are the real
+  // ones, by usage weight:
+  //   #ffffff  page ground (137307 area units of painted background)
+  //   #161616  the one dark band colour (20163)
+  //   #1788fb  brand blue -- 305 text usages, 11587 area units of band background
+  //   #ffce51  CTA fill (806 area units, 63 button instances)
+  //   #1d2939  structural navy (63 text usages)
+  //   #2d2a26  body text (391 usages)
+  //   #e5e0e0 / #d0d5dd  the two greys (7417 area / 90 hairline borders)
+  //
+  // ROLE MAPPING, and why it is not the obvious one. Two departures, both recorded:
+  //
+  // 1. `primary` takes the structural navy #1d2939, NOT the brand blue. The gate requires
+  //    the call CTA to be the highest-chroma element (A-7), and the reference's blue
+  //    (OKLCH C 0.1949) is MORE chromatic than its yellow CTA fill (C 0.1489). Held
+  //    literally, the reference's own palette fails our own cta-primacy rule on every
+  //    route -- which is precisely the defect the brief warns about. So the chromatic
+  //    action colour becomes `accent` and the structural furniture becomes `primary`.
+  //    Measured ordering after that swap: accent C 0.1659 > primary C 0.0341.
+  //
+  // 2. `accent` holds the brand blue's HUE and CHROMA but its LIGHTNESS is lowered from
+  //    OKLCH L 0.6312 to 0.5291. This is an ACCESSIBILITY CORRECTION, in the same class as
+  //    docs/behavior/01 adding the `aria-expanded` the reference omits. The reference
+  //    ships white-on-#1788fb at 3.53:1 and blue-on-#ffce51 at 2.39:1 -- both below AA,
+  //    and D-19 sets WCAG 2.2 AA. There is no lightness at which a LIGHT accent can carry
+  //    dark AA text AND still separate from a white page at 3:1, so the accent has to go
+  //    darker: L 0.5291 is the highest lightness at which a white label clears 4.5:1.
+  //    Resulting: white on accent 5.37:1, accent fill vs page 5.37:1.
+  //    Chroma is gamut-clipped from 0.1949 to 0.1659 at that lightness; hue is untouched
+  //    before rotation. Everything else in the ramp holds L and C exactly.
+  //
+  // `neutral600` (#6f7276) is DERIVED, not extracted: the reference has no mid grey, its
+  // hairline #d0d5dd sits at 1.47:1 on white, and palette.mjs gates borderStrong at 3:1.
+  // #6f7276 is the same value docs/known-divergence.md 5 repaints placeholders to, so the
+  // built page and its placeholders share one mid tone.
+  // `primaryDeep` / `accentDeep` are derived darker steps (the reference has no hover
+  // token of its own); both hold their family's hue and sit strictly below their base in L.
+  referenceRamp: {
+    neutral0:    '#ffffff',
+    neutral200:  '#e5e0e0',
+    neutral400:  '#d0d5dd',
+    neutral600:  '#6f7276',
+    neutral900:  '#161616',
+    primary:     '#1d2939',
+    primaryDeep: '#0a1524',
+    accent:      '#0d6ac8',
+    accentDeep:  '#064c92',
+  },
+
+  // EXEMPT from hue rotation (A-7). A randomly green error state is a bug.
+  // Hues asserted by the gate: error in [5,55], success in [120,175]. All three clear
+  // 4.5:1 on the page ground: 6.57 / 5.69 / 5.43.
+  semantic: {
+    error:   '#b42318',
+    success: '#067647',
+    warning: '#b54708',
+  },
+
+  // ---- pairsInUse: what the SHELL ACTUALLY PAINTS ------------------------------------
+  // Not the ramp in theory. Every row below corresponds to a real fg/bg combination in
+  // app/globals.css + the shell components, and nothing the shell does not render is here.
+  //
+  // NO GRADIENT ROWS, and that is a measurement, not an omission: the Prompt 5 extraction
+  // walked every visible element on all five reference pages at three widths and found
+  // ZERO elements with a gradient background-image. There is no gradient band to clone, so
+  // none is invented, so there is no `{ bg: { gradient: [...] } }` entry to declare.
+  // `gradientSamples` stays configured for the section builds in case one arrives.
+  //
+  // Exactly ONE row carries `kind: 'cta'` -- the call-now button, which is the only filled
+  // chromatic action anywhere in the shell (header CTA, drawer CTA and the mobile call bar
+  // are the same component and the same pair). Everything else that is clickable is text
+  // in `primary` or `neutral0`, at near-zero chroma, so it cannot out-saturate the call.
+  pairsInUse: [
+    { name: 'body text on page',        fg: 'neutral900', bg: 'neutral0',   min: 4.5 },
+    { name: 'muted text on page',       fg: 'primary',    bg: 'neutral0',   min: 4.5 },
+    { name: 'nav link on page',         fg: 'neutral900', bg: 'neutral0',   min: 4.5 },
+    { name: 'link on page',             fg: 'primary',    bg: 'neutral0',   min: 4.5 },
+    { name: 'input edge on page',       fg: 'borderStrong', bg: 'neutral0', min: 3 },
+    { name: 'call CTA label on fill',   fg: 'neutral0',   bg: 'accent',     min: 4.5, kind: 'cta' },
+    { name: 'call CTA hover fill',      fg: 'neutral0',   bg: 'accentDeep', min: 4.5 },
+    { name: 'call CTA fill on dark',    fg: 'accent',     bg: 'neutral900', min: 3 },
+    { name: 'footer text on dark',      fg: 'neutral0',   bg: 'neutral900', min: 4.5 },
+    { name: 'footer muted on dark',     fg: 'neutral400', bg: 'neutral900', min: 4.5 },
+    { name: 'footer rule on dark',      fg: 'neutral600', bg: 'neutral900', min: 3 },
+    // Two-layer focus ring: a surface-coloured inner halo plus the dark outer ring. That
+    // is the only construction holding 3:1 against BOTH a white page and a saturated fill
+    // with a single token, which is why globals.css paints it as two box-shadow layers.
+    { name: 'focus ring on page',       fg: 'focus',      bg: 'neutral0',   min: 3, kind: 'focus' },
+    { name: 'focus halo on CTA fill',   fg: 'neutral0',   bg: 'accent',     min: 3, kind: 'focus' },
+    { name: 'focus ring on dark band',  fg: 'neutral0',   bg: 'neutral900', min: 3, kind: 'focus' },
+    // Semantic pairs are constant across candidates (no rotation), so they cannot bias the
+    // selection; they are gated here so Prompt 7's form inherits a verified palette.
+    { name: 'form error on page',       fg: 'error',      bg: 'neutral0',   min: 4.5 },
+    { name: 'form success on page',     fg: 'success',    bg: 'neutral0',   min: 4.5 },
+  ],
+
   // ---- asset slot rules (Prompt 2) ---------------------------------------------------
   // Checked IN ORDER by inventory.mjs classify(); first match wins. Basenames are the
   // WordPress srcset base (foo-480x281.png -> foo), so one rule covers every variant.
@@ -222,6 +320,6 @@ export default {
     'deleted-megamenu-thumb': true,
   },
 
-  masterSeed: 3108,
+  masterSeed: 123,   // steered to land the winner's primary hue inside the 105-130 window; see docs/known-divergence.md 8
   gradientSamples: 5,
 };

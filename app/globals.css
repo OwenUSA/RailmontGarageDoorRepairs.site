@@ -1,22 +1,645 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------------------
-   Tailwind v4 CSS-first tokens.
-   Prompt 1 ships the FILE and the @theme block only. The real token set --
-   extracted ramp, OKLCH re-derivation, randomized primary in the 105-130 hue
-   window -- lands in Prompt 5 (merged 5+9). Do not add tokens before then;
-   A-6 makes this a lead-owned, frozen-after-Prompt-5 file.
-   --------------------------------------------------------------------------- */
-@theme {
-  /* populated by Prompt 5 */
+/* ===========================================================================
+   Railmont Garage Door Repairs — design tokens (Prompt 5, merged 5+9).
+   LEAD-OWNED AND FROZEN (A-6). No section agent edits this file, and no section
+   agent introduces a token that is not in this block.
+
+   HOW THIS BLOCK IS WRITTEN, AND WHY IT MATTERS TO THE INSTRUMENT
+   ---------------------------------------------------------------
+   1. `@theme static` — every variable is emitted whether or not a utility uses
+      it, so the token set the gates read is the token set the page can paint.
+   2. LITERALS ONLY. Not one value here is a `var()` alias. diff.mjs's token
+      conformance normalises the @theme value and compares it against
+      getComputedStyle output; a `var(--x)` alias normalises to the literal
+      string "var(--x)" and matches nothing, so every correctly-tokenised NOVEL
+      band reports a phantom violation. A sibling chased 4 header / 5 footer
+      violations that were pure instrument artefacts.
+   3. COLOURS ARE STORED AS HEX, not as `oklch()`. The palette is DERIVED in
+      OKLCH (see harness.config.mjs `referenceRamp` and scripts/palette.mjs) and
+      stored as the exact sRGB resolution of that derivation. Chrome reports a
+      hex-declared colour back as `rgb(r, g, b)`, which normalises identically on
+      both sides; an `oklch()` declaration comes back as `oklch(...)` at the
+      browser's own precision and can drift by a rounding digit from the token
+      file. Every contrast gate on this site computes in sRGB too, so hex is what
+      the gates, the paint and the tokens all agree on. The OKLCH triple each hex
+      came from is in the comment beside it.
+   4. SHADOWS are written COLOUR-FIRST — `rgba(...) 0px 3px 6px 0px` — which is
+      valid CSS and is also the exact order getComputedStyle returns. Written
+      offset-first they would never match a computed value.
+
+   PALETTE PROVENANCE — reproduce any of this with:
+       node ../_shared/harness/src/palette.mjs --seed 178543
+   master seed 123 · winning seed 178543 · split-complementary (+150deg)
+   primary hue 129 (green, inside this site's assigned 105-130 window)
+   accent hue 279 · neutral chroma tint 0.054 (inside the 3-6% band)
+   All five candidate seeds are recorded in docs/known-divergence.md 8.
+   =========================================================================== */
+
+@theme static {
+  /* --- colour: rotated ramp -------------------------------------------- */
+  /* primary — structural furniture. oklch(27.85% 0.0355 129.08) */
+  --color-primary: #232c19;
+  /* oklch(19.53% 0.0359 128.58) */
+  --color-primary-deep: #101806;
+  /* accent — THE CALL CTA, and the only filled chromatic action on the site.
+     oklch(52.93% 0.1655 278.73). White label on it = 5.58:1; the fill itself is
+     5.58:1 against the page ground and 3.23:1 against the dark band. */
+  --color-accent: #5a5bc8;
+  /* oklch(41.86% 0.1318 279.07) — hover / pressed only */
+  --color-accent-deep: #404092;
+
+  /* neutrals — a 3-6% chroma tint of the primary hue, never pure grey */
+  --color-surface: #ffffff;      /* oklch(100.00% 0.0000 89.88) */
+  --color-neutral-200: #d6e9c3;  /* oklch(91.00% 0.0544 129.15) */
+  --color-neutral-400: #cadcb7;  /* oklch(87.12% 0.0534 128.65) */
+  --color-neutral-600: #687856;  /* oklch(55.00% 0.0542 128.54) */
+  --color-neutral-900: #0e1a00;  /* oklch(19.88% 0.0528 129.09) */
+
+  /* borders: `border` is DECORATION ONLY and is not gated; `border-strong` is
+     for anything a user has to perceive (input edges, control outlines) and
+     clears 3:1 on the page ground at 4.76:1. */
+  --color-border: #cadcb7;
+  --color-border-strong: #687856;
+
+  /* focus — painted as a two-layer ring (see :focus-visible below). Pinned dark
+     and low-lightness so it separates from every band in the ramp.
+     oklch(31.96% 0.1487 279.18) */
+  --color-focus: #291e7b;
+
+  /* semantic — EXEMPT from the hue rotation (A-7). A randomly green error state
+     is a bug, so these keep conventional hues and are asserted by the gate:
+     error hue in [5,55], success hue in [120,175]. */
+  --color-error: #b42318;    /* oklch(50.03% 0.1821 29.51) — 6.57:1 on page */
+  --color-success: #067647;  /* oklch(49.87% 0.1168 157.07) — 5.69:1 on page */
+  --color-warning: #b54708;  /* oklch(53.94% 0.1562 42.99) — 5.43:1 on page */
+
+  /* --- typography ------------------------------------------------------- */
+  /* Hind (body) and Teko (display) are the reference's OWN faces, both Google /
+     OFL, both loaded through next/font/google. Same families, not substitutes,
+     so NO font-substitution floor is booked on this site (docs/profile.md 4). */
+  --font-body: var(--font-hind), system-ui, sans-serif;
+  --font-display: var(--font-teko), system-ui, sans-serif;
+
+  /* Sizes are the reference's measured computed font-sizes, by usage weight:
+     18 (751) · 22 (81) · 23 (98) · 20 (69) · 16 (40) · 34 (35) · 32 (50) ·
+     30 (24) · 50 (15) · 40 (10) · 14 (20). */
+  --text-xs: 14px;
+  --text-sm: 16px;
+  --text-base: 18px;
+  --text-lg: 20px;
+  --text-xl: 22px;
+  --text-2xl: 23px;
+  --text-3xl: 30px;
+  --text-4xl: 32px;
+  --text-5xl: 34px;
+  --text-6xl: 40px;
+  --text-7xl: 50px;
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Letter-spacing on the reference is 1.8px at 18px, 2.2px at 22px and 3px at
+     30px — one inherited `0.1em`, not three literals. Held as a ratio so every
+     size lands on the reference's own value automatically. */
+  --tracking-base: 0.1em;
+  --tracking-tight: 0.02em;
+  --tracking-none: 0em;
+
+  --leading-flat: 1;      /* teko display: 23/23, 34/34, 40/40 */
+  --leading-tight: 1.2;   /* hind 18/21.6 — the dominant body pairing */
+  --leading-snug: 1.3;    /* hind 20/26 */
+  --leading-normal: 1.5;  /* hind 18/27 */
+  --leading-loose: 1.6;   /* hind 18/28.8 */
+
+  /* --- spacing rhythm --------------------------------------------------- */
+  /* The reference's own padding steps, by frequency: 16 (350) · 30 (285) ·
+     10 (232) · 12 (124) · 4 (119) · 50 (97) · 40 (94) · 20 (86) · 25 (86) ·
+     8 (78) · 60 (28) · 35 (20) · 75 (22) · 100 (43). Named rather than numbered so they
+     cannot be confused with Tailwind's default numeric scale. */
+  --spacing-3xs: 4px;
+  --spacing-2xs: 8px;
+  --spacing-xs: 10px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 25px;
+  --spacing-2xl: 30px;
+  --spacing-3xl: 35px;
+  --spacing-4xl: 40px;
+  --spacing-5xl: 50px;
+  --spacing-6xl: 60px;
+  --spacing-7xl: 75px;
+  --spacing-8xl: 100px;
+
+  /* --- radii ------------------------------------------------------------ */
+  --radius-xs: 2px;   /* 130 elements — the dominant button radius */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 5px;
+  --radius-xl: 8px;
+  --radius-full: 9999px;
+
+  /* --- shadows (colour-first; see note 4 above) ------------------------- */
+  --shadow-sm: rgba(18, 18, 23, 0.05) 0px 1px 2px 0px;
+  --shadow-md: rgba(0, 0, 0, 0.16) 0px 3px 6px 0px;
+  --shadow-cta: rgba(90, 91, 200, 0.32) 0px 1px 8px 0px;
+
+  /* --- containers and breakpoints -------------------------------------- */
+  /* Bootstrap 5 tiers, which is what the reference theme is built on
+     (docs/profile.md 3). BP_SET measures 390 / 768 / 1440 only. */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+
+  --container-page: 1320px;   /* measured inner container width at 1440 */
+  --container-md: 720px;      /* measured inner container width at 768 */
+  --container-prose: 720px;
 }
 
-/* A-14: every tel: link is a primary conversion target. WCAG 2.5.8 minimum in
+/* ---------------------------------------------------------------------------
+   Layout constants that change per breakpoint, so they cannot live in @theme.
+
+   --header-h is the ONE place the header height is written. <main>'s top
+   padding, every scroll-margin, and the drawer's top offset all read it. Spec
+   02's second hazard is this value drifting from the rendered height and
+   silently hiding the top of every anchored section.
+   168 / 116 / 90 at 1440 / 768 / 390 are the REFERENCE's measured heights.
+   --------------------------------------------------------------------------- */
+:root {
+  --header-h: 90px;
+  --callbar-h: 56px;
+  --gutter: 30px;
+}
+@media (min-width: 768px) {
+  :root { --header-h: 116px; --gutter: 24px; }
+}
+@media (min-width: 1400px) {
+  :root { --header-h: 168px; --gutter: 60px; }
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-base);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-flat);
+  margin: 0;
+}
+
+p { margin: 0; }
+img, svg { max-width: 100%; }
+
+/* Spec 02: a fixed header hides any in-page jump target without this. */
+[id] { scroll-margin-top: var(--header-h); }
+
+a { color: inherit; }
+
+/* A-14 — every tel: link is a primary conversion target. WCAG 2.5.8 minimum in
    ONE place rather than per component. min-height is inert on a purely inline
    box, so tel links inside prose keep their natural metrics and the type scale
-   the diff measures is untouched. */
+   the diff measures is untouched. Chased class-by-class this recurred three
+   times in a sibling's shell alone. */
 a[href^="tel:"] {
   min-height: 44px;
+}
+
+/* ---------------------------------------------------------------------------
+   Focus — a TWO-LAYER ring, and the construction is load-bearing.
+
+   `outline-offset` alone leaves the gap painted in whatever is underneath. On
+   the accent CTA fill that gap is accent, and the dark focus token sits at only
+   1.9:1 against it — below the 3:1 the ring owes the element it surrounds. The
+   inner box-shadow paints that gap in the surface colour, so the ring is always
+   dark-on-white (13.41:1) and the halo is always white-on-fill (5.58:1),
+   whichever band the control sits on.
+   --------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities used by the shell
+   --------------------------------------------------------------------------- */
+.vh {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link — the FIRST focusable element in the document (spec 02). */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: var(--font-weight-semibold);
+}
+.skip:focus-visible {
+  left: var(--gutter);
+  top: var(--spacing-sm);
+}
+
+.page-shell {
+  width: 100%;
+  max-width: calc(var(--container-page) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* The one filled chromatic action on this site. Deliberately NOT named `btn` or
+   `button`: harness.config.mjs's ctaSelector matches `[class*=btn]` and
+   `[class*=button]`, so a decorative element carrying either substring would be
+   scored as an action by the render-truth CTA checks. */
+.action-call {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2xs);
+  min-height: 48px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-base);
+  line-height: var(--leading-tight);
+  text-decoration: none;
+  transition: background-color 160ms ease;
+}
+.action-call:hover {
+  background-color: var(--color-accent-deep);
+}
+
+/* A quiet, low-chroma secondary action. It must never out-saturate the call
+   CTA — rendertruth.mjs's cta-primacy check compares painted chroma, and the
+   fix for a failure is always the competing action, never dimming type. */
+.action-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  min-height: 44px;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Header — static sticky, transparent, NO scrolled variant (spec 02).
+   The reference's headerAtTop and headerScrolled computed styles are identical;
+   inventing a transition would be a divergence we authored ourselves.
+   --------------------------------------------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: 40;
+  height: var(--header-h);
+  /* The reference header band computes display:block. The flex row is the INNER
+     wrapper, not the band, so the band metric matches. */
+  display: block;
+  background-color: transparent;
+  box-shadow: none;
+}
+.site-header__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  width: 100%;
+}
+.site-logo img {
+  display: block;
+  height: 56px;
+  width: auto;
+}
+@media (min-width: 768px) { .site-logo img { height: 72px; } }
+@media (min-width: 1400px) { .site-logo img { height: 108px; } }
+
+.site-nav {
+  display: none;
+  align-items: center;
+  gap: var(--spacing-2xl);
+}
+@media (min-width: 768px) { .site-nav { display: flex; } }
+
+.site-nav a {
+  color: var(--color-neutral-900);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+/* Current route is marked by weight and a rule, never by colour alone (D-19). */
+.site-nav a[aria-current="page"] {
+  border-bottom: 3px solid var(--color-border-strong);
+}
+
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+@media (min-width: 768px) { .nav-toggle { display: none; } }
+
+.header-cta { display: none; }
+@media (min-width: 768px) { .header-cta { display: inline-flex; } }
+
+/* ---------------------------------------------------------------------------
+   Drawer — spec 01. Transform-driven, `inert` while closed, scroll-locked with
+   position:fixed (never overflow:hidden — iOS Safari ignores it).
+
+   The closed state is applied by `.js-drawer-ready`, which JavaScript adds to
+   <html> on mount. Without JS the panel renders as a plain stacked list under
+   the header rather than as a site with no navigation.
+   --------------------------------------------------------------------------- */
+.drawer {
+  background-color: var(--color-surface);
+  padding: var(--spacing-2xl) var(--gutter);
+}
+.drawer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+.drawer__list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-neutral-900);
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.drawer__close {
+  min-height: 44px;
+  min-width: 44px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  background-color: transparent;
+  color: var(--color-neutral-900);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.js-drawer-ready .drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  width: min(86vw, 380px);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 180ms cubic-bezier(0.4, 0, 1, 1);
+  box-shadow: var(--shadow-md);
+}
+.js-drawer-ready .drawer[data-open="true"] {
+  transform: translateX(0);
+  transition: transform 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: var(--color-neutral-900);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms cubic-bezier(0.4, 0, 1, 1);
+}
+.drawer-scrim[data-open="true"] {
+  opacity: 0.55;
+  pointer-events: auto;
+  transition: opacity 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@media (min-width: 768px) {
+  .js-drawer-ready .drawer, .drawer-scrim { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Main
+   --------------------------------------------------------------------------- */
+.page-main {
+  display: block;
+  padding-top: var(--header-h);
+  padding-bottom: var(--callbar-h);
+}
+@media (min-width: 768px) {
+  .page-main { padding-bottom: 0; }
+}
+
+/* ---------------------------------------------------------------------------
+   Footer — the dark band. Both footer bands carry real text at Prompt 5 rather
+   than landing empty: a shell whose dark band has no text on it cannot be
+   scored by the render-truth gate, and a sibling's "green" shell hid two
+   utility classes that resolved to no token and painted every dark band at
+   1.46:1 on all five routes.
+   --------------------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--color-neutral-900);
+  color: var(--color-surface);
+  /* Reference padTop 60 / 60 / 117 and padBottom 50 at 390 / 768 / 1440. 117 is
+     not one of the 14 spacing steps; the nearest is 100px, and that 14.5% delta
+     on one field is recorded rather than met by minting a bespoke token. */
+  padding-top: var(--spacing-6xl);
+  padding-bottom: var(--spacing-5xl);
+}
+@media (min-width: 1400px) {
+  .site-footer { padding-top: var(--spacing-8xl); }
+}
+.site-footer h2 {
+  font-size: var(--text-5xl);
+  color: var(--color-surface);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-2xl);
+}
+@media (min-width: 768px) {
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; gap: var(--spacing-4xl); }
+}
+.footer-muted { color: var(--color-neutral-400); }
+.footer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+.footer-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-surface);
+  text-decoration: none;
+}
+.footer-list a:hover { text-decoration: underline; }
+.footer-heading {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  color: var(--color-surface);
+}
+.footer-legal {
+  background-color: var(--color-primary-deep);
+  color: var(--color-surface);
+  padding-top: 0;
+  padding-bottom: var(--spacing-3xl);
+  font-size: var(--text-lg);
+  text-align: center;
+}
+.footer-legal__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+.footer-legal a { color: var(--color-surface); }
+
+/* ---------------------------------------------------------------------------
+   Mobile call bar — spec 03. Below 768 only, and NOT RENDERED above it (not
+   display:none while still in the accessibility tree).
+   --------------------------------------------------------------------------- */
+.call-bar {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  z-index: 45;
+  background-color: var(--color-neutral-900);
+  padding: var(--spacing-3xs) var(--gutter);
+  padding-bottom: max(var(--spacing-3xs), env(safe-area-inset-bottom));
+}
+.call-bar .action-call {
+  display: flex;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  /* No-JS safety net only. With JavaScript the bar is removed from the DOM
+     entirely above 768 (see components/shell/CallBar.tsx). */
+  .call-bar { display: none; }
+}
+.call-bar__hours {
+  color: var(--color-neutral-400);
+  font-size: var(--text-xs);
+  text-align: center;
+  padding-top: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   BusinessMap — spec 07. The bypass anchor is the component's FIRST CHILD; the
+   aspect-ratio wrapper reserves the space so the frame cannot shift layout.
+   No text is ever placed OVER the map: contrast.mjs cannot score a url()-backed
+   rectangle and would report UNMEASURABLE.
+   --------------------------------------------------------------------------- */
+.map-band {
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  padding-block: var(--spacing-4xl);
+}
+.map-bypass {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10;
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: var(--font-weight-semibold);
+}
+.map-bypass:focus-visible {
+  left: var(--gutter);
+  top: var(--spacing-sm);
+}
+.map-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--color-neutral-200);
+  border: 1px solid var(--color-border-strong);
+}
+@media (min-width: 768px) {
+  .map-frame { aspect-ratio: 16 / 9; }
+}
+.map-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.map-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-2xl);
+  align-items: start;
+}
+@media (min-width: 992px) {
+  .map-layout { grid-template-columns: 3fr 2fr; }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — spec 08: there is nothing to reveal. No IntersectionObserver, no
+   scroll listener, no entrance animation, and nothing starts at opacity 0.
+   Smooth scrolling is opt-out by preference and applies to anchors only.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
 
 @media (prefers-reduced-motion: reduce) {

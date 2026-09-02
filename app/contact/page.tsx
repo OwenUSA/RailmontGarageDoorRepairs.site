@@ -5,5 +5,5 @@ import { copy } from '@/content/copy';
 export const metadata: Metadata = copy.routes['/contact'].meta;
 
 export default function ContactPage() {
-  return <main data-route="/contact">{/* STUB: sections land in Prompt 7 */}</main>;
+  return <main id="main" tabIndex={-1} className="page-main" data-route="/contact">{/* STUB: sections land in Prompt 7 */}</main>;
 }

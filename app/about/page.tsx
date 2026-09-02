@@ -5,5 +5,5 @@ import { copy } from '@/content/copy';
 export const metadata: Metadata = copy.routes['/about'].meta;
 
 export default function AboutPage() {
-  return <main data-route="/about">{/* STUB: sections land in Prompt 7 */}</main>;
+  return <main id="main" tabIndex={-1} className="page-main" data-route="/about">{/* STUB: sections land in Prompt 7 */}</main>;
 }
