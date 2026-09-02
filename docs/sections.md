@@ -54,8 +54,18 @@ The two candidates that looked closest were checked and rejected:
   the business name and the reference's Terms & Conditions link, which we do not have a
   route for. Business-name swap is *literally* the ADAPTED definition.
 - **`s01-*`, the page-head strips on the interior routes.** A single centred H1 on a band.
-  But the H1 text length differs on every route and the band's background is a roofing
-  photograph we are forbidden to reuse (D-09).
+  The H1 text length differs on every route, and the business name appears in three of the
+  four (`About Premiere Roofing`, `Commercial Roof Services`, `Get An Estimate`), which is
+  the ADAPTED definition.
+
+  **Corrected at Prompt 3:** this entry originally also claimed the band's background was
+  "a roofing photograph we are forbidden to reuse (D-09)". **There is no such photograph.**
+  The Prompt 2 asset probe finds zero background images on `/about-us` and
+  `/privacy-policy`, and the only background images on `/get-an-estimate` and
+  `/commercial-roofing` belong to other bands. `page-head` is a solid strip. The class is
+  unchanged — it never rested on that claim — but the consequence matters: the four
+  `page-head` bands are **NOT placeholder-blocked** and can converge structurally on their
+  first measurement with nothing excluded.
 
 CLAUDE.md names "misclassifying an ADAPTED section as FIDELITY and grinding on it" as the
 single most expensive failure mode in this process. Zero is the honest number here, and
@@ -153,6 +163,28 @@ the same way; that band stays ADAPTED because the rest of it is the NAP block.
 ## 4. HUMAN TABLE — the same 63 rows, read in page order
 
 **Edit this together with section 3.** If they disagree, section 3 is what runs.
+
+### Section ORDER is ours, and it is not a class change (Prompt 3)
+
+`diff.mjs` pairs rows on `ref-section-id`, never on position, so reordering a band changes
+nothing measurable and is free to be an editorial decision. Four moves on `/`, all argued in
+`docs/content-divergence.md`:
+
+| ref order | our order |
+|---|---|
+| hero · intro · door-styles · services-grid · why-us · process · testimonials · promise · locations · new-door-cta · team · credentials | hero · intro · **process** · **services-grid** · **door-styles** · why-us · **promise** · **testimonials** · new-door-cta · credentials · **service-map** |
+
+`process` lifts from seventh band to third (workmanship leads); `services-grid` and
+`door-styles` swap (the symptom grid answers the question the visitor arrived with);
+`promise` and `testimonials` swap (the argument lands better before the social proof, and it
+keeps three literal `[TESTIMONIAL PLACEHOLDER]` blocks off the fold); `service-map` takes the
+slot the deleted locations grid vacated.
+
+On `/services`, the NOVEL `faq` band is inserted between `services-detail` and
+`experience-band`.
+
+**The `#` column below is the REFERENCE band ordinal, not our render order.** Read it as the
+pairing key; read the table above for what actually renders in what sequence.
 
 ### `/` — home (15 reference bands, 13 kept, 2 deleted, 2 novel added)
 
