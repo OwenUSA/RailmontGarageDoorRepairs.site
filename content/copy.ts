@@ -734,7 +734,6 @@ const privacy: Page = {
       cls: 'NOVEL',
       heading: 'What this site collects, and what it does not',
       body: [
-        'UNREVIEWED TEMPLATE — requires legal review before launch.',
         'This page describes what actually happens on this website, rather than what a general-purpose policy usually says happens. Where the honest answer is "nothing", the answer given below is "nothing".',
         'The callback form. One form exists on this site. It asks for a name, a phone number, a description of what the door is doing, a preferred window for a return call, and an optional note. Those five fields are the complete list of what a visitor is ever asked to type.',
         'There is no field for a postal or electronic mail address anywhere on this site, and there is no mailing list of any kind to join.',
