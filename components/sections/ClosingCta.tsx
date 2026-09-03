@@ -10,14 +10,16 @@ export default function ClosingCta({ section }: { readonly section: Section }) {
         {(section.body ?? []).map((p, i) => (
           <p key={i} className="body-copy">{p}</p>
         ))}
-        <p>
-          {section.ctas?.[0] ? (
+        {section.ctas?.[0] ? (
+          <p>
             <a href={telHref} className="action-quiet">{section.ctas[0]}</a>
-          ) : null}
-          {section.ctas?.[1] ? (
+          </p>
+        ) : null}
+        {section.ctas?.[1] ? (
+          <p>
             <Link href="/contact" className="action-quiet">{section.ctas[1]}</Link>
-          ) : null}
-        </p>
+          </p>
+        ) : null}
       </div>
     </section>
   );

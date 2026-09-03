@@ -289,7 +289,7 @@ const home: Page = {
         { label: 'Torqued to the rating' },
         { label: 'Cycle-tested twice' },
         { label: 'Parts sized to your door' },
-        { label: 'Free estimate' },
+        { label: 'Checked before we leave' },
       ],
       ctas: ['Read more', 'Read more', 'Read more', 'Read more', 'Read more', 'Free estimate'],
     },
@@ -328,7 +328,7 @@ const home: Page = {
       body: [
         'A new door is the easy part. The opening decides how it behaves for the next twenty years — headroom, backroom, jamb condition, how square the floor sits under the bottom seal. We measure all of it before anyone talks about panels, because a good door hung in a crooked opening is a service call already booked.',
       ],
-      ctas: ['Free estimate', 'Free estimate'],
+      ctas: ['Free estimate', `Call ${business.phone}`],
     },
     {
       id: 'credentials',
