@@ -11,7 +11,6 @@ import WhyUs from '@/components/sections/WhyUs';
 import Promise_ from '@/components/sections/Promise';
 import Testimonials from '@/components/sections/Testimonials';
 import NewDoorCta from '@/components/sections/NewDoorCta';
-import Credentials from '@/components/sections/Credentials';
 
 // Metadata is READ from content/copy.ts, never written here. A sibling site hardcoded
 // `metadata` into five page files, shipped the wrong city in all five, and no gate could
@@ -61,7 +60,10 @@ export default function HomePage() {
       <Promise_ section={getSection('/', 'promise')} />
       <Testimonials section={getSection('/', 'testimonials')} />
       <NewDoorCta section={getSection('/', 'new-door-cta')} />
-      <Credentials section={getSection('/', 'credentials')} />
+      {/* Credentials band removed: all 16 credential-badge-* slots were third-party
+          trust/certification badges with no real artwork available (D-14) — the whole
+          section had no content besides those badges, so it was dropped rather than
+          left as an empty band. */}
       {/* D-08: zoom ~13 on home — the service-area view. */}
       <BusinessMap
         body={map.body ?? []}

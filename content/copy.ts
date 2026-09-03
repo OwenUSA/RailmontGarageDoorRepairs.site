@@ -328,12 +328,6 @@ const home: Page = {
       ctas: ['Free estimate', `Call ${business.phone}`],
     },
     {
-      id: 'credentials',
-      refSection: 's12-certifications-awards',
-      cls: 'ADAPTED',
-      heading: 'Credentials & Approvals',
-    },
-    {
       id: 'service-map',
       refSection: null,
       cls: 'NOVEL',
@@ -645,12 +639,6 @@ const services: Page = {
         'Commercial doors cycle many times a day and fail differently for it — bearing and cable wear rather than sudden breakage, and usually with plenty of warning if anyone is listening. We service sectional bays, roll-up shutters and the openers that drive them.',
       ],
       ctas: [`Call ${business.phone}`],
-    },
-    {
-      id: 'credentials',
-      refSection: 's10-our-certifications',
-      cls: 'ADAPTED',
-      heading: 'Approvals & Awards',
     },
     napFor('s11'),
     legalFor('s12-footer'),

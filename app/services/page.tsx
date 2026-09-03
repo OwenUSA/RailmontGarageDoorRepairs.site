@@ -10,7 +10,6 @@ import Process from '@/components/sections/Process';
 import ServicesDetail from '@/components/sections/ServicesDetail';
 import Faq from '@/components/sections/Faq';
 import ExperienceBand from '@/components/sections/ExperienceBand';
-import Credentials from '@/components/sections/Credentials';
 
 // Read, never hardcoded — see app/page.tsx.
 // Gate 13: a self-referencing canonical, resolved against `metadataBase`. It was absent
@@ -54,7 +53,7 @@ export default function ServicesPage() {
       {/* NOVEL: the reference has zero accordions on any of its five pages (spec 05). */}
       <Faq section={getSection('/services', 'faq')} />
       <ExperienceBand section={getSection('/services', 'experience-band')} />
-      <Credentials section={getSection('/services', 'credentials')} />
+      {/* Credentials band removed: see app/page.tsx for rationale. */}
     </main>
   );
 }
