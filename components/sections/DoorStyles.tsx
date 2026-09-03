@@ -23,7 +23,7 @@ export default function DoorStyles({ section }: { readonly section: Section }) {
           {items.map((item, i) => (
             <div key={item.label}>
               <img
-                alt=""
+                alt={`${item.label} garage door panel style — Railmont Garage Door Repairs, Fort Mill, SC`}
                 className="media"
                 height={200}
                 src={`/placeholders/door-style-${i + 1}.svg`}

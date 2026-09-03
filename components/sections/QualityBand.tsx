@@ -17,7 +17,13 @@ export default function QualityBand({ section }: { readonly section: Section }) 
               const icon = icons[i % icons.length] ?? icons[0]!;
               return (
                 <div key={item.label} className="stack">
-                  <img className="media" src={icon.src} alt="" width={icon.width} height={icon.height} />
+                  <img
+                    className="media"
+                    src={icon.src}
+                    alt={`${item.label} — Railmont Garage Door Repairs, Fort Mill, SC`}
+                    width={icon.width}
+                    height={icon.height}
+                  />
                   <h3 className="h-item">{item.label}</h3>
                   {item.text ? <p className="body-copy">{item.text}</p> : null}
                 </div>

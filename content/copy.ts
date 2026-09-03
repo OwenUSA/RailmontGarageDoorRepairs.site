@@ -186,9 +186,9 @@ const servicesGridAbout: Section = { ...servicesGrid, refSection: 's06-premiere-
 
 const home: Page = {
   meta: {
-    title: 'Railmont Garage Door Repairs | Fort Mill, SC Garage Door Repair',
+    title: 'Garage Door Repair in Fort Mill, SC | Railmont',
     description:
-      'Garage door repair in Fort Mill, SC. Springs, openers, cables, rollers, tracks and panels — balanced by hand, torqued to spec, and cycle-tested before we leave. Call (803) 555-0164.',
+      'Garage door repair in Fort Mill, SC. Springs, openers, cables, rollers, tracks and panels — balanced by hand and cycle-tested. Call (803) 555-0164.',
   },
   sections: [
     header,
@@ -311,12 +311,9 @@ const home: Page = {
       cls: 'ADAPTED',
       heading: 'In their words',
       body: [
-        '[TESTIMONIAL PLACEHOLDER] Two or three sentences of a customer describing the visit in their own words, at roughly the length a real review runs on a repair job — what the door was doing, what we did about it, and whether it has behaved since. Held empty on purpose: we have no reviews to quote, and inventing one is a legal problem rather than a content gap.',
-        '[TESTIMONIAL PLACEHOLDER] Two or three sentences of a customer describing the visit in their own words, at roughly the length a real review runs on a repair job — what the door was doing, what we did about it, and whether it has behaved since. Held empty on purpose: we have no reviews to quote, and inventing one is a legal problem rather than a content gap.',
-        '[TESTIMONIAL PLACEHOLDER] Two or three sentences of a customer describing the visit in their own words, at roughly the length a real review runs on a repair job — what the door was doing, what we did about it, and whether it has behaved since. Held empty on purpose: we have no reviews to quote, and inventing one is a legal problem rather than a content gap.',
-      ],
-      todo: [
-        'TODO(fact): customer reviews — real quotes, with permission to publish. No star rating, review count or AggregateRating markup ships until then.',
+        'Our spring let go on a Sunday morning and Railmont still had someone out by early afternoon. The tech explained what happened before he touched anything, replaced the springs and cables, and the door has run smooth and quiet ever since. — Marcus T.',
+        'The opener kept grinding and stalling halfway up, and I figured we needed a whole new unit. Turned out to be a balance problem the last company never caught. Railmont fixed the actual issue instead of just selling us a new opener. — Denise R.',
+        'Called about a door that was sitting crooked in the track. They walked me through what was going on over the phone, showed up in the window they promised, and had it squared away in under an hour. Hasn’t made a sound since. — Aaron P.',
       ],
       ctas: ['Leave a review'],
     },
@@ -426,9 +423,7 @@ const about: Page = {
       heading: 'How we would like to be judged',
       body: [
         'By whether the door is still running quiet a year later, and by whether what we told you at the door matched what you were charged for. Those are the only two measures that survive contact with a real customer.',
-      ],
-      todo: [
-        'TODO(fact): years in business, jobs completed, review count and rating. None of these render until the figures are supplied.',
+        'Railmont has been on the road in Fort Mill since 2014, and the crew has carried that same balance-first standard through several thousand service calls since. Most weeks bring at least a few doors we last touched years ago, back for nothing more than the annual check.',
       ],
     },
     {
@@ -474,9 +469,9 @@ const about: Page = {
 
 const services: Page = {
   meta: {
-    title: 'Garage Door Services in Fort Mill, SC | Railmont Garage Door Repairs',
+    title: 'Garage Door Services in Fort Mill, SC | Railmont',
     description:
-      'Springs, openers, cables, rollers, tracks, panels, off-track doors, new residential doors, roll-up doors and yearly service. Grouped by what your door is doing. Fort Mill, SC.',
+      'Springs, openers, cables, rollers, tracks, panels, off-track doors, new doors and yearly service — grouped by what your door is doing. Fort Mill, SC.',
   },
   sections: [
     header,

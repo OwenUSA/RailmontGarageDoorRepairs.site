@@ -14,7 +14,7 @@ export default function Testimonials({ section }: { readonly section: Section })
             <blockquote key={`q${i}`} className="stack">
               <img
                 src="/placeholders/testimonial-quote-mark.svg"
-                alt=""
+                alt="Customer review of Railmont Garage Door Repairs, Fort Mill, SC"
                 width={82}
                 height={63}
               />

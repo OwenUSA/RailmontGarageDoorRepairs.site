@@ -24,7 +24,7 @@ export default function WhyUs({ section }: { readonly section: Section }) {
           {items.map((item, i) => (
             <div key={item.label}>
               <img
-                alt=""
+                alt={`${item.label} — Railmont Garage Door Repairs, Fort Mill, SC`}
                 className="media"
                 height={428}
                 src={`/placeholders/why-us-${i + 1}.svg`}

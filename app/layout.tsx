@@ -36,6 +36,20 @@ export const metadata: Metadata = {
   description: business.tagline,
   // D-15: no analytics, no pixels, no chat widget, nothing to declare here.
   robots: { index: true, follow: true },
+  openGraph: {
+    title: business.name,
+    description: business.tagline,
+    url: siteUrl,
+    siteName: business.name,
+    type: 'website',
+    images: ['/placeholders/logo-header.svg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: business.name,
+    description: business.tagline,
+    images: ['/placeholders/logo-header.svg'],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { copy } from '@/content/copy';
+import { business, copy } from '@/content/copy';
 import { getSection } from '@/lib/sections';
 import PageHead from '@/components/sections/PageHead';
 import PrivacyBody from '@/components/sections/PrivacyBody';
@@ -10,6 +10,20 @@ import PrivacyBody from '@/components/sections/PrivacyBody';
 export const metadata: Metadata = {
   ...copy.routes['/privacy'].meta,
   alternates: { canonical: '/privacy' },
+  openGraph: {
+    title: copy.routes['/privacy'].meta.title,
+    description: copy.routes['/privacy'].meta.description,
+    url: '/privacy',
+    siteName: business.name,
+    type: 'website',
+    images: ['/placeholders/logo-header.svg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: copy.routes['/privacy'].meta.title,
+    description: copy.routes['/privacy'].meta.description,
+    images: ['/placeholders/logo-header.svg'],
+  },
 };
 
 export default function PrivacyPage() {

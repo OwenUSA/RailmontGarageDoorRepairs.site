@@ -56,7 +56,7 @@ export default function Hero({ section, pillarPrefix, doneText }: Props) {
                   {/* Plain <img>, matching the shell: next/image refuses to optimise
                       SVG by default and these placeholder slots are all SVG. */}
                   <img
-                    alt=""
+                    alt={`${item.label} garage door repair — Railmont Garage Door Repairs, Fort Mill, SC`}
                     className="media"
                     height={208}
                     src={`/placeholders/${pillarPrefix}-${i + 1}.svg`}
@@ -77,7 +77,7 @@ export default function Hero({ section, pillarPrefix, doneText }: Props) {
 
           <div>
             <img
-              alt=""
+              alt="Request a garage door repair callback — Railmont Garage Door Repairs, Fort Mill, SC"
               className="media"
               height={67}
               src="/placeholders/form-head-graphic.svg"

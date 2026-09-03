@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { copy } from '@/content/copy';
+import { business, copy } from '@/content/copy';
 import { getSection } from '@/lib/sections';
 import BusinessMap from '@/components/shell/BusinessMap';
 import Hero from '@/components/sections/Hero';
@@ -21,6 +21,20 @@ import Credentials from '@/components/sections/Credentials';
 export const metadata: Metadata = {
   ...copy.routes['/'].meta,
   alternates: { canonical: '/' },
+  openGraph: {
+    title: copy.routes['/'].meta.title,
+    description: copy.routes['/'].meta.description,
+    url: '/',
+    siteName: business.name,
+    type: 'website',
+    images: ['/placeholders/logo-header.svg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: copy.routes['/'].meta.title,
+    description: copy.routes['/'].meta.description,
+    images: ['/placeholders/logo-header.svg'],
+  },
 };
 
 const map = getSection('/', 'service-map');

@@ -8,7 +8,7 @@ export default function ServicesDetail({ section }: { readonly section: Section 
         <img
           className="media"
           src="/placeholders/services-detail-image.svg"
-          alt=""
+          alt="Garage door repair services — springs, openers, cables, rollers, tracks and panels in Fort Mill, SC"
           width={650}
           height={488}
         />

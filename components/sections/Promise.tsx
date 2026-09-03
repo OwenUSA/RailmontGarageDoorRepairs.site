@@ -14,7 +14,7 @@ export default function Promise({ section }: { readonly section: Section }) {
         <div className="cols cols-2">
           <div>
             <img
-              alt=""
+              alt="Garage door technician balancing springs and hardware — Railmont Garage Door Repairs, Fort Mill, SC"
               className="media"
               height={366}
               src="/placeholders/promise-media.svg"

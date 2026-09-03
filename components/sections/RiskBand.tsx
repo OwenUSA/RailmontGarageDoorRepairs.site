@@ -23,7 +23,7 @@ export default function RiskBand({ section }: { readonly section: Section }) {
         <img
           className="media"
           src="/placeholders/promise-media.svg"
-          alt=""
+          alt="Garage door balance and safety inspection — Railmont Garage Door Repairs, Fort Mill, SC"
           width={720}
           height={405}
         />

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { copy } from '@/content/copy';
+import { business, copy } from '@/content/copy';
 import { getSection } from '@/lib/sections';
 import PageHead from '@/components/sections/PageHead';
 import CallbackFormBand from '@/components/sections/CallbackFormBand';
@@ -11,6 +11,20 @@ import BusinessMap from '@/components/shell/BusinessMap';
 export const metadata: Metadata = {
   ...copy.routes['/contact'].meta,
   alternates: { canonical: '/contact' },
+  openGraph: {
+    title: copy.routes['/contact'].meta.title,
+    description: copy.routes['/contact'].meta.description,
+    url: '/contact',
+    siteName: business.name,
+    type: 'website',
+    images: ['/placeholders/logo-header.svg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: copy.routes['/contact'].meta.title,
+    description: copy.routes['/contact'].meta.description,
+    images: ['/placeholders/logo-header.svg'],
+  },
 };
 
 const map = getSection('/contact', 'contact-map');

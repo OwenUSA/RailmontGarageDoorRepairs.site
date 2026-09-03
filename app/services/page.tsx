@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { copy } from '@/content/copy';
+import { business, copy } from '@/content/copy';
 import { getSection } from '@/lib/sections';
 import Hero from '@/components/sections/Hero';
 import PageHead from '@/components/sections/PageHead';
@@ -18,6 +18,20 @@ import Credentials from '@/components/sections/Credentials';
 export const metadata: Metadata = {
   ...copy.routes['/services'].meta,
   alternates: { canonical: '/services' },
+  openGraph: {
+    title: copy.routes['/services'].meta.title,
+    description: copy.routes['/services'].meta.description,
+    url: '/services',
+    siteName: business.name,
+    type: 'website',
+    images: ['/placeholders/logo-header.svg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: copy.routes['/services'].meta.title,
+    description: copy.routes['/services'].meta.description,
+    images: ['/placeholders/logo-header.svg'],
+  },
 };
 
 const doneText = getSection('/contact', 'callback-form').subheading ?? '';
