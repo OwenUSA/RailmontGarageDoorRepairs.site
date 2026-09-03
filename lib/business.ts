@@ -88,5 +88,5 @@ export const localBusinessJsonLd = (siteUrl: string) => ({
 /** The five routes in CONSTANTS. D-01: adding one is out of scope. */
 export const routes = ['/', '/about', '/services', '/contact', '/privacy'] as const;
 
-/** Local-only build (D-18). No deploy, no domain, no env vars. */
-export const siteUrl = 'http://localhost:3108';
+/** Canonical origin. Served as static files by nginx on owen-main. */
+export const siteUrl = 'https://railmontgaragedoorrepairs.site';
